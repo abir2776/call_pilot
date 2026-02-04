@@ -56,5 +56,6 @@ urlpatterns = [
     ),
     path("admin/", admin.site.urls),
     path("api/v1/organizations/", include("organizations.rest.urls")),
+    path("api/v1/core/", include("core.rest.urls")),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

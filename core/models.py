@@ -10,7 +10,7 @@ from versatileimagefield.fields import VersatileImageField
 from common.choices import Status
 from common.models import BaseModelWithUID
 
-from .choices import UserGender
+from .choices import DemoRequestStatus, PurposeChoices, UserGender
 from .managers import CustomUserManager
 from .utils import get_user_media_path_prefix, get_user_slug
 
@@ -83,3 +83,19 @@ class User(AbstractUser, BaseModelWithUID):
 
     def get_role(self):
         return self.organization_profile.filter(is_active=True).first().role
+
+
+class DemoRequest(BaseModelWithUID):
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
+    email = models.EmailField()
+    phone = PhoneNumberField()
+    purpose = models.CharField(max_length=20, choices=PurposeChoices.choices)
+    status = models.CharField(
+        max_length=20,
+        choices=DemoRequestStatus.choices,
+        default=DemoRequestStatus.PENDING,
+    )
+
+    def __str__(self):
+        return f"{self.email}-{self.purpose}"
