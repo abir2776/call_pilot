@@ -3,6 +3,7 @@ from __future__ import absolute_import, unicode_literals
 import os
 
 from celery import Celery
+from celery.schedules import crontab
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "swift_web_ai.settings")
 
@@ -15,3 +16,14 @@ app.autodiscover_tasks()
 @app.task(bind=True)
 def debug_task(self):
     print(f"Request: {self.request!r}")
+
+
+# -------------------------------
+#     Celery Beat SCHEDULE
+# -------------------------------
+app.conf.beat_schedule = {
+    "run-initiate-all-interview-morning": {
+        "task": "interview.tasks.ai_phone.initiate_all_interview",
+        "schedule": crontab(minute="*/5", hour="0-8", day_of_week="0-6"),
+    },
+}
