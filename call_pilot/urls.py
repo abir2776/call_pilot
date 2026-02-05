@@ -6,10 +6,11 @@ from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
     TokenRefreshView,
     TokenVerifyView,
 )
+
+from core.rest.views.login import LoginRequestView
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -41,8 +42,13 @@ urlpatterns = [
     # JWT Token
     path(
         "api/v1/token",
-        TokenObtainPairView.as_view(),
-        name="token_obtain_pair",
+        LoginRequestView.as_view(),
+        name="login_request",
+    ),
+    path(
+        "api/v1/token/verify-otp",
+        TokenVerifyView.as_view(),
+        name="token_verify",
     ),
     path(
         "api/v1/token/refresh",

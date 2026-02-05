@@ -13,6 +13,9 @@ from common.models import BaseModelWithUID
 from .choices import DemoRequestStatus, PurposeChoices, UserGender
 from .managers import CustomUserManager
 from .utils import get_user_media_path_prefix, get_user_slug
+from django.utils import timezone
+import random
+import string
 
 logger = logging.getLogger(__name__)
 
@@ -99,3 +102,27 @@ class DemoRequest(BaseModelWithUID):
 
     def __str__(self):
         return f"{self.email}-{self.purpose}"
+    
+
+class OTPToken(BaseModelWithUID):
+    email = models.EmailField()
+    otp_code = models.CharField(max_length=6)
+    expires_at = models.DateTimeField()
+    is_used = models.BooleanField(default=False)
+    remember_me = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def is_valid(self):
+        return (
+            not self.is_used 
+            and timezone.now() <= self.expires_at
+        )
+
+    @staticmethod
+    def generate_otp():
+        return ''.join(random.choices(string.digits, k=6))
+
+    def __str__(self):
+        return f"OTP for {self.user.email} - {self.otp_code}"

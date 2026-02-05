@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Login OTP</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 20px;
+            text-align: center;
+            color: #ffffff;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 600;
+        }
+        .content {
+            padding: 40px 30px;
+        }
+        .greeting {
+            font-size: 18px;
+            color: #333333;
+            margin-bottom: 20px;
+        }
+        .message {
+            font-size: 16px;
+            color: #666666;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        .otp-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            margin: 30px 0;
+        }
+        .otp-label {
+            color: #ffffff;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        .otp-code {
+            font-size: 36px;
+            font-weight: bold;
+            color: #ffffff;
+            letter-spacing: 8px;
+            font-family: 'Courier New', monospace;
+        }
+        .validity {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .validity p {
+            margin: 0;
+            color: #856404;
+            font-size: 14px;
+        }
+        .security-note {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+        .security-note h3 {
+            margin: 0 0 10px 0;
+            color: #333333;
+            font-size: 16px;
+        }
+        .security-note p {
+            margin: 0;
+            color: #666666;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .footer {
+            background-color: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            color: #999999;
+            font-size: 13px;
+        }
+        .footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔐 Login Verification</h1>
+        </div>
+        
+        <div class="content">
+            <div class="greeting">
+                Hello {{ user_name }},
+            </div>
+            
+            <div class="message">
+                We received a login request for your account. Please use the OTP code below to complete your login:
+            </div>
+            
+            <div class="otp-box">
+                <div class="otp-label">Your OTP Code</div>
+                <div class="otp-code">{{ otp_code }}</div>
+            </div>
+            
+            <div class="validity">
+                <p>⏰ This code will expire in <strong>{{ valid_minutes }} minutes</strong></p>
+            </div>
+            
+            <div class="security-note">
+                <h3>🛡️ Security Notice</h3>
+                <p>
+                    If you didn't request this login, please ignore this email and ensure your account is secure. 
+                    Never share this OTP code with anyone, including our support team.
+                </p>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>This is an automated email, please do not reply.</p>
+            <p>&copy; 2024 Call Pilot. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>
