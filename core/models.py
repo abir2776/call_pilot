@@ -95,7 +95,7 @@ class DemoRequest(BaseModelWithUID):
     phone = PhoneNumberField()
     purpose = models.CharField(max_length=20, choices=PurposeChoices.choices)
     company_category = models.CharField(max_length=255, null=True, blank=True)
-    employee_size = models.IntegerField(null=True, blank=True)
+    employee_size = models.CharField(null=True, blank=True)
     status = models.CharField(
         max_length=20,
         choices=DemoRequestStatus.choices,
