@@ -29,6 +29,7 @@ class PublicOrganizationRegistrationSerializer(serializers.Serializer):
         ],
         required=False,
     )
+    password = serializers.CharField()
 
     def validate_email(self, data):
         email = data.lower()
@@ -48,6 +49,7 @@ class PublicOrganizationRegistrationSerializer(serializers.Serializer):
             phone = validated_data["phone"]
             first_name = validated_data["first_name"]
             last_name = validated_data["last_name"]
+            password = validated_data["password"]
 
             user = User.objects.create(
                 email=email,
@@ -57,7 +59,7 @@ class PublicOrganizationRegistrationSerializer(serializers.Serializer):
                 last_name=last_name,
                 is_active=True,
             )
-            user.set_unusable_password()
+            user.set_password(password)
             user.save()
             logger.debug(f"Created new user: {user}")
 
