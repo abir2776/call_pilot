@@ -10,7 +10,7 @@ from rest_framework_simplejwt.views import (
     TokenVerifyView,
 )
 
-from core.rest.views.login import LoginRequestView
+from core.rest.views.login import LoginRequestView,OTPVerifyView
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -47,7 +47,7 @@ urlpatterns = [
     ),
     path(
         "api/v1/token/verify-otp",
-        TokenVerifyView.as_view(),
+        OTPVerifyView.as_view(),
         name="token_verify",
     ),
     path(
