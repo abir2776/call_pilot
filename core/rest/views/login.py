@@ -58,7 +58,7 @@ class OTPVerifyView(APIView):
         serializer = OTPVerifySerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         otp_token = serializer.validated_data["otp_token"]
-        user = User.objects.filter(email=otp_token.email)
+        user = User.objects.filter(email=otp_token.email).first()
 
         otp_token.is_used = True
         otp_token.save()
