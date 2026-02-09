@@ -11,5 +11,5 @@ class DemoRequestListCreateAPIView(ListCreateAPIView):
 
     def get_permissions(self):
         if self.request.method == "POST":
-            return [IsAuthenticated()]
-        return [AllowAny()]
+            return [AllowAny()]
+        return [IsAuthenticated()]
