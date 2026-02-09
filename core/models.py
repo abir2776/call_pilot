@@ -1,9 +1,12 @@
 import logging
+import random
+import string
 import uuid
 
 from autoslug import AutoSlugField
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.utils import timezone
 from phonenumber_field.modelfields import PhoneNumberField
 from versatileimagefield.fields import VersatileImageField
 
@@ -13,9 +16,6 @@ from common.models import BaseModelWithUID
 from .choices import DemoRequestStatus, PurposeChoices, UserGender
 from .managers import CustomUserManager
 from .utils import get_user_media_path_prefix, get_user_slug
-from django.utils import timezone
-import random
-import string
 
 logger = logging.getLogger(__name__)
 
@@ -94,6 +94,8 @@ class DemoRequest(BaseModelWithUID):
     email = models.EmailField()
     phone = PhoneNumberField()
     purpose = models.CharField(max_length=20, choices=PurposeChoices.choices)
+    company_category = models.CharField(max_length=255, null=True, blank=True)
+    employee_size = models.IntegerField(null=True, blank=True)
     status = models.CharField(
         max_length=20,
         choices=DemoRequestStatus.choices,
@@ -102,7 +104,7 @@ class DemoRequest(BaseModelWithUID):
 
     def __str__(self):
         return f"{self.email}-{self.purpose}"
-    
+
 
 class OTPToken(BaseModelWithUID):
     email = models.EmailField()
@@ -112,17 +114,14 @@ class OTPToken(BaseModelWithUID):
     remember_me = models.BooleanField(default=False)
 
     class Meta:
-        ordering = ['-created_at']
+        ordering = ["-created_at"]
 
     def is_valid(self):
-        return (
-            not self.is_used 
-            and timezone.now() <= self.expires_at
-        )
+        return not self.is_used and timezone.now() <= self.expires_at
 
     @staticmethod
     def generate_otp():
-        return ''.join(random.choices(string.digits, k=6))
+        return "".join(random.choices(string.digits, k=6))
 
     def __str__(self):
         return f"OTP for {self.user.email} - {self.otp_code}"
