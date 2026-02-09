@@ -187,7 +187,5 @@ CORS_ALLOW_ALL_ORIGINS = True
 APPEND_SLASH = False
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://api.swiftwave.ai",
-    "https://www.swiftwave.ai",
-    "http://api.swiftwave.ai",
+    "https://api.callpilot.pro",
 ]
