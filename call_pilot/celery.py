@@ -22,8 +22,19 @@ def debug_task(self):
 #     Celery Beat SCHEDULE
 # -------------------------------
 app.conf.beat_schedule = {
-    "run-initiate-all-interview-morning": {
+    # Evening: 5 PM to 11:59 PM (Monday-Friday)
+    "run-initiate-interview-evening": {
         "task": "interview.tasks.ai_phone.initiate_all_interview",
-        "schedule": crontab(minute="*/5", hour="0-8", day_of_week="0-6"),
+        "schedule": crontab(minute="*/5", hour="17-23", day_of_week="1-5"),
+    },
+    # Morning: 12 AM to 8:59 AM (Tuesday-Saturday for weekdays + Monday for weekend coverage)
+    "run-initiate-interview-morning": {
+        "task": "interview.tasks.ai_phone.initiate_all_interview",
+        "schedule": crontab(minute="*/5", hour="0-8", day_of_week="1-6"),
+    },
+    # Weekend: All day Saturday and Sunday until Monday 9 AM
+    "run-initiate-interview-weekend": {
+        "task": "interview.tasks.ai_phone.initiate_all_interview",
+        "schedule": crontab(minute="*/5", hour="*", day_of_week="0,6"),
     },
 }
