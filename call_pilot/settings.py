@@ -190,3 +190,5 @@ APPEND_SLASH = False
 CSRF_TRUSTED_ORIGINS = [
     "https://api.callpilot.pro",
 ]
+
+FRONTEND_BASE_URL = os.getenv("FRONTEND_BASE_URL")
