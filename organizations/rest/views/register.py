@@ -77,7 +77,7 @@ class UserForgetPasswordAPIView(APIView):
         send_email_task.delay(
             subject="Reset your password",
             recipient=email,
-            template_name="organizations/templates/emails/forget_password.html",
+            template_name="emails/forget_password.html",
             context=context,
         )
         return Response(
