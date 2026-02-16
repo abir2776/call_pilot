@@ -10,7 +10,7 @@ from rest_framework_simplejwt.views import (
     TokenVerifyView,
 )
 
-from core.rest.views.login import LoginRequestView,OTPVerifyView
+from core.rest.views.login import LoginRequestView, OTPVerifyView
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -69,5 +69,6 @@ urlpatterns = [
     path("api/v1/interview/", include("interview.rest.urls")),
     path("api/v1/auth/organizations/", include("organizations.rest.urls.register")),
     path("api/v1/subscription/", include("subscription.rest.urls")),
+    path("api/v1/me/", include("core.rest.urls.me")),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
