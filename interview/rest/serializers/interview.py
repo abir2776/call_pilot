@@ -62,17 +62,17 @@ class InterviewTakenSerializer(serializers.ModelSerializer):
             else:
                 status_id = None
 
-            # if status_id:
-            #     update_application_status_after_call.delay(
-            #         organization_id, application_id, status_id
-            #     )
-            # if status == "successful" and config.sent_document_upload_link:
-            #     message = f"Please Upload your updated documents in this link: {config.document_upload_link}"
-            #     send_sms_message.delay(
-            #         validated_data["candidate_phone"],
-            #         str(config.phone.phone_number),
-            #         message,
-            #         organization_id,
-            #     )
+            if status_id:
+                update_application_status_after_call.delay(
+                    organization_id, application_id, status_id
+                )
+            if status == "successful" and config.sent_document_upload_link:
+                message = f"Please Upload your updated documents in this link: {config.document_upload_link}"
+                send_sms_message.delay(
+                    validated_data["candidate_phone"],
+                    str(config.phone.phone_number),
+                    message,
+                    organization_id,
+                )
 
         return interview

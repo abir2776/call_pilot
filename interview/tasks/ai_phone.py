@@ -110,7 +110,7 @@ def make_interview_call(
             ).exists()
         if not is_taken:
             payload = {
-                "to_phone_number": "+8801815553036",
+                "to_phone_number": to_number,
                 "from_phone_number": from_phone_number,
                 "organization_id": organization_id,
                 "application_id": application_id,
@@ -135,7 +135,7 @@ def make_interview_call(
             )
             response.raise_for_status()
             print("Call initiated successfully")
-            # update_application_status_after_call(organization_id, application_id)
+            update_application_status_after_call(organization_id, application_id)
 
         else:
             print(
@@ -357,7 +357,7 @@ def fetch_platform_candidates(config):
                             status.get("statusId")
                             == config.application_status_for_calling
                             and has_enough_time_passed(updated_at, waiting_duration)
-                            and len(candidate_phone) > 0
+                            and len(candidate_phone) > 0 and candidate_id == 16995516
                         ):
                             candidate_data = {
                                 "to_number": candidate_phone,
