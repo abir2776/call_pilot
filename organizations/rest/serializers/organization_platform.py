@@ -115,6 +115,7 @@ class PlatformSerializer(serializers.ModelSerializer):
             "response_type",
             "state",
             "is_connected",
+            "my_platform"
         ]
 
     def get_is_connected(self, obj):
