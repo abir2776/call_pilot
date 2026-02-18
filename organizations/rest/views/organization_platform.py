@@ -1,5 +1,5 @@
 from rest_framework import status
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import DestroyAPIView, ListAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -51,6 +51,18 @@ class PlatformListView(ListAPIView):
 class MyPlatformListView(ListAPIView):
     permission_classes = [IsAdminOrOwner]
     serializer_class = MyPlatformSerializer
+
+    def get_queryset(self):
+        organization = self.request.user.get_organization()
+        queryset = OrganizationPlatform.objects.filter(organization=organization)
+        return queryset
+
+
+class MyPlatformDetailsView(DestroyAPIView):
+    permission_classes = [IsAdminOrOwner]
+    serializer_class = MyPlatformSerializer
+
+    lookup_field = "uid"
 
     def get_queryset(self):
         organization = self.request.user.get_organization()
