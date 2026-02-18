@@ -5,4 +5,5 @@ urlpatterns = [
     path("conversations/", include("interview.rest.urls.conversations")),
     path("call/config/", include("interview.rest.urls.call_config")),
     path("status/", include("interview.rest.urls.status")),
+    path("retry/", include("interview.rest.urls.recall")),
 ]
