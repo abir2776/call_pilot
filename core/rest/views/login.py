@@ -1,5 +1,6 @@
 from datetime import timedelta
 
+from django.contrib.auth import authenticate
 from django.utils import timezone
 from rest_framework import status
 from rest_framework.permissions import AllowAny
@@ -19,33 +20,58 @@ class LoginRequestView(APIView):
         serializer = LoginRequestSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        email = serializer.validated_data["email"]
+        email = serializer.validated_data["email"].lower()
+        password = serializer.validated_data["password"]
         remember_me = serializer.validated_data["remember_me"]
 
-        otp_code = OTPToken.generate_otp()
-        otp_token = OTPToken.objects.create(
-            email=email,
-            otp_code=otp_code,
-            expires_at=timezone.now() + timedelta(minutes=10),
-            remember_me=remember_me,
-        )
-        context = {
-            "user_name": email,
-            "otp_code": otp_code,
-            "valid_minutes": 10,
-        }
+        user = authenticate(request, username=email, password=password)
 
-        send_email_task.delay(
-            subject="Your Login OTP Code",
-            recipient=email,
-            template_name="emails/otp_login.html",
-            context=context,
-        )
+        if not user:
+            return Response(
+                {"detail": "Invalid email or password."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        if user.is_otp_required:
+            otp_code = OTPToken.generate_otp()
+
+            OTPToken.objects.create(
+                email=email,
+                otp_code=otp_code,
+                expires_at=timezone.now() + timedelta(minutes=10),
+                remember_me=remember_me,
+            )
+
+            context = {
+                "user_name": email,
+                "otp_code": otp_code,
+                "valid_minutes": 10,
+            }
+
+            send_email_task.delay(
+                subject="Your Login OTP Code",
+                recipient=email,
+                template_name="emails/otp_login.html",
+                context=context,
+            )
+
+            return Response(
+                {
+                    "message": "OTP sent to your email",
+                    "email": email,
+                    "otp_required": True,
+                },
+                status=status.HTTP_200_OK,
+            )
+        refresh = RefreshToken.for_user(user)
+        if remember_me:
+            refresh.set_exp(lifetime=timedelta(days=30))
 
         return Response(
             {
-                "message": "OTP sent to your email",
-                "email": email,
+                "otp_required": False,
+                "access": str(refresh.access_token),
+                "refresh": str(refresh),
             },
             status=status.HTTP_200_OK,
         )

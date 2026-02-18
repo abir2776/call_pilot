@@ -55,6 +55,7 @@ class User(AbstractUser, BaseModelWithUID):
         db_index=True, unique=True, default=uuid.uuid4, editable=False
     )
     is_verified = models.BooleanField(default=False)
+    is_otp_required = models.BooleanField(default=True)
 
     objects = CustomUserManager()
 
