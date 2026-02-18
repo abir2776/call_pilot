@@ -95,6 +95,7 @@ class OrganizationPlatformTokenSerializer(serializers.Serializer):
 
 class PlatformSerializer(serializers.ModelSerializer):
     is_connected = serializers.SerializerMethodField()
+    my_platform = serializers.SerializerMethodField()
 
     class Meta:
         model = Platform
@@ -125,6 +126,16 @@ class PlatformSerializer(serializers.ModelSerializer):
         if organization_platform:
             return organization_platform.is_connected
         return False
+
+    def get_my_platform(self, obj):
+        user = self.context.get("request").user
+        organization = user.get_organization()
+        organization_platform = obj.organization_connections.filter(
+            organization=organization
+        ).first()
+        if organization_platform:
+            return MyPlatformSerializer(organization_platform).data
+        return None
 
 
 class MyPlatformSerializer(serializers.ModelSerializer):
