@@ -9,7 +9,15 @@ class MeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ["first_name", "last_name", "password", "old_password","is_otp_required"]
+        fields = [
+            "first_name",
+            "last_name",
+            "email",
+            "password",
+            "old_password",
+            "is_otp_required",
+        ]
+        read_only_fields = ["email"]
 
     def validate_email(self, data):
         email = data.lower()
