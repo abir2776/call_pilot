@@ -1,5 +1,4 @@
 from django.db import models
-from phonenumber_field.modelfields import PhoneNumberField
 
 from common.choices import Status
 from common.models import BaseModelWithUID
@@ -27,6 +26,7 @@ class InterviewTaken(BaseModelWithUID):
     call_duration = models.CharField(max_length=100, null=True, blank=True)
     call_status = models.CharField(max_length=100, null=True, blank=True)
     disconnection_reason = models.CharField(max_length=100, null=True, blank=True)
+    from_number = models.CharField(max_length=255, null=True, blank=True)
     type = models.CharField(
         max_length=20,
         choices=InterviewType.choices,
