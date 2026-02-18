@@ -142,8 +142,6 @@ class PlatformSerializer(serializers.ModelSerializer):
 
 
 class MyPlatformSerializer(serializers.ModelSerializer):
-    platform = PlatformSerializer(read_only=True)
-
     class Meta:
         model = OrganizationPlatform
         fields = "__all__"
