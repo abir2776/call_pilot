@@ -115,7 +115,7 @@ class PlatformSerializer(serializers.ModelSerializer):
             "response_type",
             "state",
             "is_connected",
-            "my_platform"
+            "my_platform",
         ]
 
     def get_is_connected(self, obj):
@@ -135,7 +135,9 @@ class PlatformSerializer(serializers.ModelSerializer):
             organization=organization
         ).first()
         if organization_platform:
-            return MyPlatformSerializer(organization_platform).data
+            return MyPlatformSerializer(
+                organization_platform, context=self.context
+            ).data
         return None
 
 
