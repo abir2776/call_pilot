@@ -70,5 +70,6 @@ urlpatterns = [
     path("api/v1/auth/organizations/", include("organizations.rest.urls.register")),
     path("api/v1/subscription/", include("subscription.rest.urls")),
     path("api/v1/me/", include("core.rest.urls.me")),
+    path("api/v1/flows/", include("flows.rest.urls")),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

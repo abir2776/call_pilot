@@ -37,6 +37,7 @@ CREATED_APPS = [
     "contacts",
     "interview",
     "subscription",
+    "flows",
 ]
 THIRD_PARTY_APPS = [
     "versatileimagefield",
